@@ -20,20 +20,6 @@ function App({ fetchUser, setMaxCount, listData }) {
 
   useEffect(() => {
     let ignore = false;
-    const startFetching = () => {
-      setTimmer(fetchUser());
-    };
-
-    if (!ignore) {
-      startFetching();
-    }
-    return () => {
-      ignore = true;
-    };
-  }, [fetchUser]);
-
-  useEffect(() => {
-    let ignore = false;
     const getMaxCount = () => Math.floor(wrapper.current.clientWidth / 130);
     const resizeHandler = async () => {
       await setMaxCount(getMaxCount());
@@ -53,6 +39,20 @@ function App({ fetchUser, setMaxCount, listData }) {
       }
     };
   }, [setMaxCount, clearTimmer]);
+
+  useEffect(() => {
+    let ignore = false;
+    const startFetching = () => {
+      setTimmer(fetchUser());
+    };
+
+    if (!ignore) {
+      startFetching();
+    }
+    return () => {
+      ignore = true;
+    };
+  }, [fetchUser]);
 
   return (
     <div ref={wrapper} className="App">

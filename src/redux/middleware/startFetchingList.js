@@ -27,4 +27,4 @@ const startFetchingUsers = store => next => (action) => {
   };
 };
 
-export default { startFetchingUsers };
+export default startFetchingUsers;

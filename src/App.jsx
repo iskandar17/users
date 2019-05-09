@@ -7,14 +7,14 @@ import List from './tiles';
 import { getUsersList } from './selectors';
 
 const mapState = state => ({
-  list: getUsersList(state),
+  listData: getUsersList(state),
 });
 const mapDispatch = dispatch => ({
   fetchUser: () => dispatch({ type: 'START_FETCHING_LIST' }),
   setMaxCount: count => dispatch({ type: 'SET_MAX_TILES_COUNT', payload: { limit: count } }),
 });
 
-function App({ fetchUser, setMaxCount, list }) {
+function App({ fetchUser, setMaxCount, listData }) {
   useEffect(() => {
     let ignore = false;
     const startFetching = async (count) => {
@@ -29,7 +29,7 @@ function App({ fetchUser, setMaxCount, list }) {
 
   return (
     <div className="App">
-      <List list={list} />
+      <List list={listData.list} />
     </div>
   );
 }
@@ -37,13 +37,13 @@ function App({ fetchUser, setMaxCount, list }) {
 App.propTypes = {
   fetchUser: PropTypes.func,
   setMaxCount: PropTypes.func,
-  list: PropTypes.arrayOf(PropTypes.object),
+  listData: PropTypes.arrayOf(PropTypes.object),
 };
 
 App.defaultProps = {
   fetchUser: _noop,
   setMaxCount: _noop,
-  list: [],
+  listData: [],
 };
 
 export default connect(mapState, mapDispatch)(App);

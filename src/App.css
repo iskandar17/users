@@ -13,6 +13,13 @@
 }
 .view-list li {
   width: 120px;
-  height: 160px;
   background-color: #eee;
+  padding-bottom: 6px;
+}
+.view-list img {
+  max-width: 100%;
+}
+.view-list .name {
+  padding-top: 8px;
+  padding-bottom: 6px;
 }

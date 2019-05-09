@@ -7,7 +7,7 @@ export const getList = createSelector(getUsersList, getViewLimit, ({ list }, lim
   if (list.length >= limit) {
     return [...list].splice(limit * -1, limit);
   }
-  return list;
+  return [...list];
 });
 
 export const getListMax = createSelector(getViewLimit, limit => limit);

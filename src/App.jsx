@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _noop from 'lodash.noop';
@@ -10,18 +10,19 @@ const mapState = state => ({
   listData: getList(state),
 });
 const mapDispatch = dispatch => ({
-  fetchUser: () => dispatch({ type: 'START_FETCHING_LIST' }),
+  fetchUser: countFrom => dispatch({ type: 'START_FETCHING_LIST', payload: countFrom }),
   setMaxCount: count => dispatch({ type: 'SET_MAX_TILES_COUNT', payload: { limit: count } }),
 });
 
 function App({ fetchUser, setMaxCount, listData }) {
   const wrapper = useRef(null);
+  const [clearTimmer, setTimmer] = useState(null); // eslint-disable-line
 
   useEffect(() => {
     let ignore = false;
     const startFetching = async (count) => {
       await setMaxCount(count);
-      fetchUser();
+      setTimmer(fetchUser());
     };
     const getMaxCount = () => Math.floor(wrapper.current.clientWidth / 130);
     const resizeHandler = () => setMaxCount(getMaxCount());

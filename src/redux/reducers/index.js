@@ -8,5 +8,5 @@ export default combineReducers({
   showList,
   maxTilesCount,
   shownUsers,
-  userDetails
+  userDetails,
 });

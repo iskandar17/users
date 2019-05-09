@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import _noop from 'lodash.noop';
@@ -15,20 +15,29 @@ const mapDispatch = dispatch => ({
 });
 
 function App({ fetchUser, setMaxCount, listData }) {
+  const wrapper = useRef(null);
+
   useEffect(() => {
     let ignore = false;
     const startFetching = async (count) => {
       await setMaxCount(count);
       fetchUser();
     };
+    const getMaxCount = () => Math.floor(wrapper.current.clientWidth / 130);
+    const resizeHandler = () => setMaxCount(getMaxCount());
+
     if (!ignore) {
-      startFetching(6);
+      startFetching(getMaxCount());
+      window.addEventListener('resize', resizeHandler);
     }
-    return () => { ignore = true; };
+    return () => {
+      ignore = true;
+      window.removeEventListener('resize', resizeHandler);
+    };
   }, [fetchUser, setMaxCount]);
 
   return (
-    <div className="App">
+    <div ref={wrapper} className="App">
       <List list={listData} />
     </div>
   );

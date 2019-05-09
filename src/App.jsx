@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import _noop from 'lodash.noop';
 import './App.css';
 import List from './tiles';
-import { getUsersList } from './selectors';
+import { getList } from './selectors';
 
 const mapState = state => ({
-  listData: getUsersList(state),
+  listData: getList(state),
 });
 const mapDispatch = dispatch => ({
   fetchUser: () => dispatch({ type: 'START_FETCHING_LIST' }),
@@ -29,7 +29,7 @@ function App({ fetchUser, setMaxCount, listData }) {
 
   return (
     <div className="App">
-      <List list={listData.list} />
+      <List list={listData} />
     </div>
   );
 }

@@ -1,22 +1,20 @@
-import { getUsersList, getViewLimit } from '../../selectors';
+import { getList, getUsersList } from '../../selectors';
 
 const fetchUser = store => next => async (action) => {
   if (action.type !== 'FETCH_USER') {
     return next(action);
   }
 
+  const MAX_ITEMS_TO_STORE = 5000;
   const OldList = getUsersList(store.getState()).list;
-  const limit = getViewLimit(store.getState());
+  const listToStore = OldList.length > MAX_ITEMS_TO_STORE ? getList(store.getState()) : OldList;
   const newActionCreator = (data) => {
     const setData = () => {
-      if (OldList.length >= limit) {
-        OldList.splice(0, 1); // use action to store shown users
-      }
       if (!data.error) {
-        OldList.push(data);
+        listToStore.push(data);
       }
 
-      return OldList;
+      return listToStore;
     };
     const newAction = Object.assign({}, { type: 'UPDATE_LIST', payload: { list: setData() } });
 
@@ -30,7 +28,7 @@ const fetchUser = store => next => async (action) => {
     // data = await response.json();
     data = {
         "login": "mojombo",
-        "id": 1,
+        "id": action.payload,
         "node_id": "MDQ6VXNlcjE=",
         "avatar_url": "https://avatars0.githubusercontent.com/u/1?v=4",
         "gravatar_id": "",

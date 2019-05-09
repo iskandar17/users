@@ -1,4 +1,4 @@
-import { getViewLimit } from '../../selectors';
+import { getListMax } from '../../selectors';
 
 const startFetchingUsers = store => next => (action) => {
   if (action.type !== 'START_FETCHING_LIST') return next(action);
@@ -9,7 +9,7 @@ const startFetchingUsers = store => next => (action) => {
       yield id;
     }
   }
-  const limit = getViewLimit(store.getState());
+  const limit = getListMax(store.getState());
   const countIds = getId();
   let isStart = true;
 

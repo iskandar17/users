@@ -16,29 +16,43 @@ const mapDispatch = dispatch => ({
 
 function App({ fetchUser, setMaxCount, listData }) {
   const wrapper = useRef(null);
-  const [clearTimmer, setTimmer] = useState(null); // eslint-disable-line
+  const [clearTimmer, setTimmer] = useState(null);
 
   useEffect(() => {
     let ignore = false;
-    const startFetching = async (count) => {
-      await setMaxCount(count);
+    const startFetching = () => {
       setTimmer(fetchUser());
     };
-    const getMaxCount = () => Math.floor(wrapper.current.clientWidth / 130);
-    const resizeHandler = () => setMaxCount(getMaxCount());
 
     if (!ignore) {
-      startFetching(getMaxCount());
+      startFetching();
+    }
+    return () => {
+      ignore = true;
+    };
+  }, [fetchUser]);
+
+  useEffect(() => {
+    let ignore = false;
+    const getMaxCount = () => Math.floor(wrapper.current.clientWidth / 130);
+    const resizeHandler = async () => {
+      await setMaxCount(getMaxCount());
+    };
+    if (!ignore) {
+      resizeHandler();
       window.addEventListener('resize', resizeHandler);
     }
     return () => {
       ignore = true;
       window.removeEventListener('resize', resizeHandler);
-      clearTimmer.then((clearTimmerId) => {
-        clearTimmerId();
-      });
+      if (clearTimmer) {
+        clearTimmer.then((clearTimmerId) => {
+          clearTimmerId();
+        });
+        setTimmer(null);
+      }
     };
-  }, [fetchUser, setMaxCount]);
+  }, [setMaxCount, clearTimmer]);
 
   return (
     <div ref={wrapper} className="App">

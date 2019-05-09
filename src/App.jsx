@@ -34,6 +34,9 @@ function App({ fetchUser, setMaxCount, listData }) {
     return () => {
       ignore = true;
       window.removeEventListener('resize', resizeHandler);
+      clearTimmer.then((clearTimmerId) => {
+        clearTimmerId();
+      });
     };
   }, [fetchUser, setMaxCount]);
 

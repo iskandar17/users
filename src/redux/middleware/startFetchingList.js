@@ -13,13 +13,13 @@ const startFetchingUsers = store => next => (action) => {
   const countIds = getId();
   let isStart = true;
 
-  // while (isStart) {
-  //   const id = countIds.next().value;
-  //   if (id >= limit) {
-  //     isStart = false;
-  //   }
-  //   store.dispatch(Object.assign({}, { type: 'FETCH_USER', payload: id }));
-  // }
+  while (isStart) {
+    const id = countIds.next().value;
+    if (id >= limit) {
+      isStart = false;
+    }
+    store.dispatch(Object.assign({}, { type: 'FETCH_USER', payload: id }));
+  }
   const timeoutId = setInterval(() => store.dispatch(Object.assign({}, { type: 'FETCH_USER', payload: countIds.next().value })), 5000);
 
   return () => {
